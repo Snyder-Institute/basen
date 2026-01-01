@@ -1,0 +1,160 @@
+---
+title: "BASEN"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+author:
+- name: Heewon Seo
+abstract: >
+  Comparing taxonomic abundance across metagenomic samples is challenging due to variability in sequencing depth, read length heterogeneity inherent to long-read sequencing, classification resolution, and taxonomic rank. In long-read platforms such as Oxford Nanopore, variable read lengths further complicate abundance estimation, as raw read counts and within-sample proportions are not directly comparable across samples. In addition, higher-resolution classifications often result in lower assignment rates, introducing rank-dependent bias. BASEN is a framework that converts taxonomic classification outputs into base-level relative abundance estimates, explicitly accounting for variable read lengths. This rank-agnostic metric enables consistent comparison across samples and taxonomic levels, improving robustness, interpretability, and reproducibility of abundance estimates in long-read, Nanopore-based metagenomic analyses.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BASEN}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+---
+
+# Overview
+BASEN (**B**ase-level **A**bundance estimation with **S**pecies-assigned **E**vidence using **N**anopore)
+computes genome-size–normalized, species-level relative abundance from Kraken2
+classification outputs. By normalizing the total number of assigned bases by
+reference genome length, BASEN mitigates biases arising from variable genome sizes,
+taxonomic resolution, and read-length heterogeneity inherent to long-read sequencing.
+
+This vignette demonstrates a typical BASEN workflow using example files shipped
+with the package under `inst/testdata`.
+
+# Workflows
+## 0. Preparation
+### A. Construct a custom database
+  * To ensure correct taxonomic assignment, reference genome FASTA headers must include a Kraken2-recognizable TaxID in the following format:
+
+```{bash kraken_header, eval=FALSE, echo=TRUE}
+|kraken:taxid|XXXXXX
+```
+
+  * Below is an example workflow for building a custom Kraken2 database.
+
+```{bash kraken2_db, eval=FALSE, echo=TRUE}
+# Do not Run
+k2 download-taxonomy --db MYCUSTOM
+k2 add-to-library --file XXXXXX.fasta --db MYCUSTOM
+k2 build --db MYCUSTOM
+```
+
+### B. Run Kraken2 classification
+  * Run Kraken2 using the custom database and generate both `.report` and `.kraken` output files for each sample.
+
+```{bash kraken2_run, eval=FALSE, echo=TRUE}
+# Do not Run
+export DB_DIR=/path/to/MYCUSTOM
+export PROJECT=/path/to/PROJECT
+export FASTQ_DIR=/path/to/FASTQ
+
+k2 classify \
+  --db $DB_DIR \
+  --report $PROJECT/REPORT/SAMPLE_x.report \
+  --output $PROJECT/KRAKEN/SAMPLE_x.kraken \
+  $FASTQ_DIR/SAMPLE_x.fastq.gz
+```
+
+### C. Generate genome size statistics
+  * BASEN requires genome size information for abundance normalization.
+  * The auxiliary script `get_genome_length_from_fasta.sh`, located under `inst/scripts`, can be used to extract genome lengths directly from FASTA files.
+  * The script outputs a tab-delimited file without a header, containing the following columns:
+    1. TaxID
+    2. Total genome length in base pairs
+    3. Accession
+    4. Description
+  * Only the first two columns (TaxID and total genome length) are required by BASEN.
+
+```{bash genome_length, eval=FALSE, echo=TRUE}
+sh get_genome_length_from_fasta.sh *.fa > genome_size.txt
+```
+
+## 1. Run BASEN
+### A. Calculate relative abundance
+  * The package includes minimal example files for demonstration purposes:
+    - example_genome_size.txt
+    - example?.report
+    - example?.kraken
+  * Interpretation of output columns:
+    * _bases_assigned_: Total number of species-specific k-mers assigned
+    * _reads_assigned_: Number of reads classified to the species
+    * _genome_size_bp_: Reference genome size in base pairs
+    * _coverage_proxy_: Genome-length–normalized sequencing signal
+    * _relative_abundance_: Normalized species-level abundance
+
+```{r basen}
+## Load library
+library(basen)
+
+## Set directory and genome size file
+kraken_dir <- system.file("testdata", package = "basen")
+genome_stats_file <- system.file(
+        "testdata", "example_genome_size.txt",
+        package = "basen"
+)
+
+## Calculate relative abundance
+ra_dt <- kraken_relative_abundance(
+        report_dir = kraken_dir,
+        genome_stats_file = genome_stats_file
+)
+head(ra_dt)
+```
+
+### B. Export per-sample metric (optional)
+```{r base_export, eval=FALSE, echo=TRUE}
+## Alternatively, export per-sample results to support parallelization
+ra_dt <- kraken_relative_abundance(
+        report_dir = kraken_dir,
+        genome_stats_file = genome_stats_file,
+        output_folder = "relative_abundance_results"
+)
+```
+
+### C. Aggregate summaries (optional)
+```{r base_ra, eval=FALSE, echo=TRUE}
+## Combine multiple exported result files into a single object
+# Summarize relative abundance
+ra_dt <- collect_basen_metrics(
+        output_folder = "relative_abundance_results", 
+        metric = "relative_abundance"
+)
+```
+
+```{r base_cp, eval=FALSE, echo=TRUE}
+## Combine multiple exported result files into a single object
+# Summarize coverage proxy
+ra_dt <- collect_basen_metrics(
+        output_folder = "relative_abundance_results", 
+        metric = "coverage_proxy"
+)
+```
+
+### C. Data transformation (optional)
+```{r long2shortORmat}
+library(data.table)
+
+## Convert from long to wide format
+ra_mat_dt <- dcast(ra_dt, sample_id ~ taxid, value.var = "coverage_proxy", fill = 0)
+head(ra_mat_dt[,c(1:4)])
+
+## Convert to matrix
+ra_mat <- as.matrix(ra_mat_dt[, -1, with = FALSE])
+rownames(ra_mat) <- ra_mat_dt$sample_id
+head(ra_mat[,c(1:3)])
+```
+
+### D. Size factors (optional)
+```{r size_factor, echo=TRUE, eval=FALSE}
+# Calculate size factors from a coverage proxy matrix
+sf_geomean <- calc_size_factors(ra_mat, method = "geomean")
+```

@@ -1,0 +1,166 @@
+ 61.49	709	709	U	0	unclassified
+ 38.51	444	0	R	1	root
+ 38.51	444	0	R1	131567	  cellular organisms
+ 38.51	444	0	R2	2	    Bacteria
+ 35.21	406	0	K	1783272	      Bacillati
+ 34.78	401	4	P	1239	        Bacillota
+ 34.00	392	10	C	186801	          Clostridia
+ 28.97	334	0	O	3085636	            Lachnospirales
+ 28.97	334	14	F	186803	              Lachnospiraceae
+ 24.72	285	3	G	572511	                Blautia
+ 19.95	230	0	S	418240	                  Blautia wexlerae
+ 19.95	230	230	S1	1121115	                    Blautia wexlerae DSM 19850
+  3.73	43	43	S	871665	                  Blautia faecis
+  0.35	4	4	S	3133152	                  Blautia intestinihominis
+  0.26	3	0	S	40520	                  Blautia obeum
+  0.26	3	3	S1	411459	                    Blautia obeum ATCC 29174
+  0.09	1	1	S	2509240	                  Blautia faecicola
+  0.09	1	1	S	2881264	                  Blautia fusiformis
+  0.52	6	0	G	841	                Roseburia
+  0.26	3	3	S	2981794	                  Roseburia amylophila
+  0.17	2	0	S	166486	                  Roseburia intestinalis
+  0.17	2	2	S1	536231	                    Roseburia intestinalis L1-82
+  0.09	1	1	S	301302	                  Roseburia faecis
+  0.52	6	0	G	33042	                Coprococcus
+  0.35	4	0	S	410072	                  Coprococcus comes
+  0.35	4	4	S1	470146	                    Coprococcus comes ATCC 27758
+  0.09	1	1	S	2881262	                  Coprococcus hominis (ex Arizal et al. 2022)
+  0.09	1	1	S	2981786	                  Coprococcus aceti
+  0.52	6	1	G	207244	                Anaerostipes
+  0.26	3	3	S	2981779	                  Anaerostipes amylophilus
+  0.17	2	0	S	649756	                  Anaerostipes hadrus
+  0.17	2	2	S1	649757	                    Anaerostipes hadrus ATCC 29173 = JCM 17467
+  0.43	5	0	G	1407607	                Fusicatenibacter
+  0.35	4	4	S	1150298	                  Fusicatenibacter saccharivorans
+  0.09	1	1	S	2881276	                  Fusicatenibacter faecihominis
+  0.26	3	0	G	2316020	                Mediterraneibacter
+  0.17	2	0	S	46228	                  [Ruminococcus] lactaris
+  0.17	2	2	S1	471875	                    [Ruminococcus] lactaris ATCC 29176
+  0.09	1	0	S	33039	                  [Ruminococcus] torques
+  0.09	1	1	S1	411460	                    [Ruminococcus] torques ATCC 27756
+  0.17	2	0	G	1769710	                Sellimonas
+  0.17	2	2	S	1653434	                  Sellimonas intestinalis
+  0.17	2	0	G	189330	                Dorea
+  0.09	1	1	S	88431	                  Dorea longicatena
+  0.09	1	0	G1	2627917	                  unclassified Dorea
+  0.09	1	1	S	1262873	                    Dorea sp. CAG:317
+  0.09	1	0	G	1766253	                Agathobacter
+  0.09	1	0	S	39491	                  Agathobacter rectalis
+  0.09	1	1	S1	515619	                    Agathobacter rectalis ATCC 33656
+  0.09	1	0	G	28050	                Lachnospira
+  0.09	1	1	S	39485	                  Lachnospira eligens
+  0.09	1	0	G	2941498	                Hominisplanchenecus
+  0.09	1	1	S	2885351	                  Hominisplanchenecus faecis
+  0.09	1	0	G	2981630	                Anthropogastromicrobium
+  0.09	1	1	S	2981768	                  Anthropogastromicrobium aceti
+  0.09	1	0	G	2981633	                Gallintestinimicrobium
+  0.09	1	1	S	2981770	                  Gallintestinimicrobium propionicum
+  4.16	48	1	O	186802	            Eubacteriales
+  2.95	34	0	F	216572	              Oscillospiraceae
+  1.73	20	0	G	2893095	                Ruminococcoides
+  1.73	20	20	S	3133162	                  Ruminococcoides intestinale
+  0.69	8	0	G	1263	                Ruminococcus
+  0.61	7	0	G1	2608920	                  unclassified Ruminococcus
+  0.43	5	5	S	2293210	                    Ruminococcus sp. AM36-2AA
+  0.17	2	2	S	1638786	                    Ruminococcus sp. UNK.MGS-30
+  0.09	1	0	G1	129701	                  environmental samples
+  0.09	1	1	S	165186	                    uncultured Ruminococcus sp.
+  0.43	5	0	G	216851	                Faecalibacterium
+  0.26	3	0	S	1851428	                  Faecalibacterium longum
+  0.26	3	3	S1	2881271	                    Faecalibacterium longum CLA-AA-H243
+  0.09	1	1	S	853	                  Faecalibacterium prausnitzii
+  0.09	1	1	S	411483	                  Faecalibacterium duncaniae
+  0.09	1	0	G	3073565	                Hominilimicola
+  0.09	1	1	S	2885356	                  Hominilimicola fabiformis
+  0.43	5	0	F	31979	              Clostridiaceae
+  0.35	4	0	G	1485	                Clostridium
+  0.26	3	0	G1	2614128	                  unclassified Clostridium
+  0.09	1	1	S	2293016	                    Clostridium sp. AF37-5
+  0.09	1	1	S	2293024	                    Clostridium sp. AM22-11AC
+  0.09	1	1	S	2293035	                    Clostridium sp. AM49-4BH
+  0.09	1	0	G1	59619	                  environmental samples
+  0.09	1	1	S	59620	                    uncultured Clostridium sp.
+  0.09	1	0	G	3144345	                Pilosibacter
+  0.09	1	1	S	3078042	                  Pilosibacter fragilis
+  0.35	4	0	F	186806	              Eubacteriaceae
+  0.35	4	0	G	1730	                Eubacterium
+  0.26	3	3	S	39496	                  Eubacterium ventriosum
+  0.09	1	0	S	39490	                  Eubacterium ramulus
+  0.09	1	1	S1	1256908	                    Eubacterium ramulus ATCC 29099
+  0.26	3	0	O1	538999	              Eubacteriales incertae sedis
+  0.17	2	0	G	2211178	                Evtepia
+  0.17	2	2	S	2211183	                  Evtepia gabavorous
+  0.09	1	0	G	204475	                Gemmiger
+  0.09	1	1	S	745368	                  Gemmiger formicilis
+  0.09	1	0	O1	50559	              environmental samples
+  0.09	1	1	S	172733	                uncultured Eubacteriales bacterium
+  0.17	2	0	P1	84086	          unclassified Bacillota
+  0.17	2	2	S	2292901	            Firmicutes bacterium OM04-13BH
+  0.17	2	0	C	909932	          Negativicutes
+  0.17	2	0	O	1843488	            Acidaminococcales
+  0.17	2	0	F	909930	              Acidaminococcaceae
+  0.17	2	0	G	33024	                Phascolarctobacterium
+  0.17	2	0	S	33025	                  Phascolarctobacterium faecium
+  0.17	2	2	S1	1122957	                    Phascolarctobacterium faecium DSM 14760
+  0.09	1	0	C	526524	          Erysipelotrichia
+  0.09	1	0	O	526525	            Erysipelotrichales
+  0.09	1	0	F	128827	              Erysipelotrichaceae
+  0.09	1	0	G	1573534	                Faecalitalea
+  0.09	1	0	S	39483	                  Faecalitalea cylindroides
+  0.09	1	1	S1	649755	                    Faecalitalea cylindroides ATCC 27803
+  0.43	5	0	P	201174	        Actinomycetota
+  0.43	5	0	C	84998	          Coriobacteriia
+  0.26	3	0	O	1643822	            Eggerthellales
+  0.26	3	0	F	1643826	              Eggerthellaceae
+  0.26	3	0	G	447020	                Adlercreutzia
+  0.26	3	3	S	2916441	                  Adlercreutzia rubneri
+  0.17	2	0	O	84999	            Coriobacteriales
+  0.17	2	0	F	84107	              Coriobacteriaceae
+  0.09	1	0	G	102106	                Collinsella
+  0.09	1	0	G1	165189	                  environmental samples
+  0.09	1	1	S	165190	                    uncultured Collinsella sp.
+  0.09	1	0	G	1473205	                Senegalimassilia
+  0.09	1	0	S	1473216	                  Senegalimassilia anaerobia
+  0.09	1	1	S1	1034345	                    Senegalimassilia anaerobia JC110
+  3.30	38	0	K	3379134	      Pseudomonadati
+  2.78	32	0	K1	1783270	        FCB group
+  2.78	32	0	K2	68336	          Bacteroidota/Chlorobiota group
+  2.78	32	0	P	976	            Bacteroidota
+  2.78	32	0	C	200643	              Bacteroidia
+  2.78	32	0	O	171549	                Bacteroidales
+  2.08	24	0	F	815	                  Bacteroidaceae
+  1.82	21	0	G	816	                    Bacteroides
+  0.95	11	0	S	246787	                      Bacteroides cellulosilyticus
+  0.95	11	11	S1	537012	                        Bacteroides cellulosilyticus DSM 14838
+  0.52	6	6	S	28116	                      Bacteroides ovatus
+  0.17	2	2	S	820	                      Bacteroides uniformis
+  0.09	1	0	S	46506	                      Bacteroides stercoris
+  0.09	1	1	S1	449673	                        Bacteroides stercoris ATCC 43183
+  0.09	1	0	S	626930	                      Bacteroides fluxus
+  0.09	1	1	S1	763034	                        Bacteroides fluxus YIT 12057
+  0.26	3	0	G	909656	                    Phocaeicola
+  0.09	1	0	S	821	                      Phocaeicola vulgatus
+  0.09	1	1	S1	435590	                        Phocaeicola vulgatus ATCC 8482
+  0.09	1	0	S	310297	                      Phocaeicola plebeius
+  0.09	1	1	S1	484018	                        Phocaeicola plebeius DSM 17135
+  0.09	1	1	S	357276	                      Phocaeicola dorei
+  0.52	6	0	F	2005525	                  Tannerellaceae
+  0.52	6	0	G	375288	                    Parabacteroides
+  0.52	6	0	S	823	                      Parabacteroides distasonis
+  0.52	6	6	S1	435591	                        Parabacteroides distasonis ATCC 8503
+  0.09	1	0	F	171550	                  Rikenellaceae
+  0.09	1	0	G	239759	                    Alistipes
+  0.09	1	0	S	28117	                      Alistipes putredinis
+  0.09	1	1	S1	445970	                        Alistipes putredinis DSM 17216
+  0.09	1	0	F	2005519	                  Barnesiellaceae
+  0.09	1	0	G	397864	                    Barnesiella
+  0.09	1	0	S	487174	                      Barnesiella intestinihominis
+  0.09	1	1	S1	742726	                        Barnesiella intestinihominis YIT 11860
+  0.52	6	0	K1	1783257	        PVC group
+  0.52	6	0	P	74201	          Verrucomicrobiota
+  0.52	6	0	C	203494	            Verrucomicrobiia
+  0.52	6	0	O	48461	              Verrucomicrobiales
+  0.52	6	0	F	1647988	                Akkermansiaceae
+  0.52	6	0	G	239934	                  Akkermansia
+  0.52	6	0	S	239935	                    Akkermansia muciniphila
+  0.52	6	6	S1	349741	                      Akkermansia muciniphila ATCC BAA-835

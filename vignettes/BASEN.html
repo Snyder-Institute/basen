@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2025-12-25" />
+
+<title>BASEN</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+<style type="text/css">
+p.abstract{
+text-align: center;
+font-weight: bold;
+}
+div.abstract{
+margin: auto;
+width: 90%;
+}
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">BASEN</h1>
+<h4 class="author">Heewon Seo</h4>
+<h4 class="date">December 25, 2025</h4>
+<div class="abstract">
+<p class="abstract">Abstract</p>
+<p>Comparing taxonomic abundance across metagenomic samples is
+challenging due to variability in sequencing depth, read length
+heterogeneity inherent to long-read sequencing, classification
+resolution, and taxonomic rank. In long-read platforms such as Oxford
+Nanopore, variable read lengths further complicate abundance estimation,
+as raw read counts and within-sample proportions are not directly
+comparable across samples. In addition, higher-resolution
+classifications often result in lower assignment rates, introducing
+rank-dependent bias. BASEN is a framework that converts taxonomic
+classification outputs into base-level relative abundance estimates,
+explicitly accounting for variable read lengths. This rank-agnostic
+metric enables consistent comparison across samples and taxonomic
+levels, improving robustness, interpretability, and reproducibility of
+abundance estimates in long-read, Nanopore-based metagenomic
+analyses.</p>
+</div>
+
+
+
+<hr />
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>BASEN (<strong>B</strong>ase-level <strong>A</strong>bundance
+estimation with <strong>S</strong>pecies-assigned
+<strong>E</strong>vidence using <strong>N</strong>anopore) computes
+genome-size–normalized, species-level relative abundance from Kraken2
+classification outputs. By normalizing the total number of assigned
+bases by reference genome length, BASEN mitigates biases arising from
+variable genome sizes, taxonomic resolution, and read-length
+heterogeneity inherent to long-read sequencing.</p>
+<p>This vignette demonstrates a typical BASEN workflow using example
+files shipped with the package under <code>inst/testdata</code>.</p>
+</div>
+<div id="workflows" class="section level1">
+<h1>Workflows</h1>
+<div id="preparation" class="section level2">
+<h2>0. Preparation</h2>
+<div id="a.-construct-a-custom-database" class="section level3">
+<h3>A. Construct a custom database</h3>
+<ul>
+<li>To ensure correct taxonomic assignment, reference genome FASTA
+headers must include a Kraken2-recognizable TaxID in the following
+format:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">|</span><span class="ex">kraken:taxid</span><span class="kw">|</span><span class="ex">XXXXXX</span></span></code></pre></div>
+<ul>
+<li>Below is an example workflow for building a custom Kraken2
+database.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Do not Run</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">k2</span> download-taxonomy <span class="at">--db</span> MYCUSTOM</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">k2</span> add-to-library <span class="at">--file</span> XXXXXX.fasta <span class="at">--db</span> MYCUSTOM</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="ex">k2</span> build <span class="at">--db</span> MYCUSTOM</span></code></pre></div>
+</div>
+<div id="b.-run-kraken2-classification" class="section level3">
+<h3>B. Run Kraken2 classification</h3>
+<ul>
+<li>Run Kraken2 using the custom database and generate both
+<code>.report</code> and <code>.kraken</code> output files for each
+sample.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Do not Run</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">export</span> <span class="va">DB_DIR</span><span class="op">=</span>/path/to/MYCUSTOM</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">export</span> <span class="va">PROJECT</span><span class="op">=</span>/path/to/PROJECT</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="bu">export</span> <span class="va">FASTQ_DIR</span><span class="op">=</span>/path/to/FASTQ</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="ex">k2</span> classify <span class="dt">\</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">--db</span> <span class="va">$DB_DIR</span> <span class="dt">\</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">--report</span> <span class="va">$PROJECT</span>/REPORT/SAMPLE_x.report <span class="dt">\</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">--output</span> <span class="va">$PROJECT</span>/KRAKEN/SAMPLE_x.kraken <span class="dt">\</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="va">$FASTQ_DIR</span>/SAMPLE_x.fastq.gz</span></code></pre></div>
+</div>
+<div id="c.-generate-genome-size-statistics" class="section level3">
+<h3>C. Generate genome size statistics</h3>
+<ul>
+<li>BASEN requires genome size information for abundance
+normalization.</li>
+<li>The auxiliary script <code>get_genome_length_from_fasta.sh</code>,
+located under <code>inst/scripts</code>, can be used to extract genome
+lengths directly from FASTA files.</li>
+<li>The script outputs a tab-delimited file without a header, containing
+the following columns:
+<ol style="list-style-type: decimal">
+<li>TaxID</li>
+<li>Total genome length in base pairs</li>
+<li>Accession</li>
+<li>Description</li>
+</ol></li>
+<li>Only the first two columns (TaxID and total genome length) are
+required by BASEN.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">sh</span> get_genome_length_from_fasta.sh <span class="pp">*</span>.fa <span class="op">&gt;</span> genome_size.txt</span></code></pre></div>
+</div>
+</div>
+<div id="run-basen" class="section level2">
+<h2>1. Run BASEN</h2>
+<div id="a.-calculate-relative-abundance" class="section level3">
+<h3>A. Calculate relative abundance</h3>
+<ul>
+<li>The package includes minimal example files for demonstration
+purposes:
+<ul>
+<li>example_genome_size.txt</li>
+<li>example?.report</li>
+<li>example?.kraken</li>
+</ul></li>
+<li>Interpretation of output columns:
+<ul>
+<li><em>bases_assigned</em>: Total number of species-specific k-mers
+assigned</li>
+<li><em>reads_assigned</em>: Number of reads classified to the
+species</li>
+<li><em>genome_size_bp</em>: Reference genome size in base pairs</li>
+<li><em>coverage_proxy</em>: Genome-length–normalized sequencing
+signal</li>
+<li><em>relative_abundance</em>: Normalized species-level abundance</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## Load library</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">library</span>(basen)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Warning: replacing previous import &#39;stats::filter&#39; by &#39;dplyr::filter&#39; when</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; loading &#39;basen&#39;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">## Set directory and genome size file</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>kraken_dir <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;testdata&quot;</span>, <span class="at">package =</span> <span class="st">&quot;basen&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>genome_stats_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>        <span class="st">&quot;testdata&quot;</span>, <span class="st">&quot;example_genome_size.txt&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>        <span class="at">package =</span> <span class="st">&quot;basen&quot;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="do">## Calculate relative abundance</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>ra_dt <span class="ot">&lt;-</span> <span class="fu">kraken_relative_abundance</span>(</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>        <span class="at">report_dir =</span> kraken_dir,</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="at">genome_stats_file =</span> genome_stats_file</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Processing 2 sample(s).</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; Loaded genome stats for 72 taxa (adjusted genome_size_bp = genome_size_bp - 35).</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; Processing sample: exampleA</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt;  - Species-level TaxIDs: 26</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt;  - Total reads: 126</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt;  - Classified reads: 121 (96.03%)</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt;  - Directly assigned reads: 38 (30.16%)</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; Processing sample: exampleB</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt;  - Species-level TaxIDs: 62</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt;  - Total reads: 454</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt;  - Classified reads: 444 (97.8%)</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co">#&gt;  - Directly assigned reads: 129 (28.41%)</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="fu">head</span>(ra_dt)</span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co">#&gt;    sample_id                            name   taxid genome_size_bp</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;                          &lt;char&gt;  &lt;char&gt;          &lt;num&gt;</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co">#&gt; 1:  exampleA         Sellimonas intestinalis 1653434        3189016</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co">#&gt; 2:  exampleA              Bacteroides ovatus   28116        6472453</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co">#&gt; 3:  exampleA                  Blautia faecis  871665        4104640</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co">#&gt; 4:  exampleA    Coprococcus intestinihominis 3133154        3604692</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#&gt; 5:  exampleA Fusicatenibacter saccharivorans 1150298        3782767</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co">#&gt; 6:  exampleA          Faecalibacillus faecis 1982628        2525910</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#&gt;    bases_assigned reads_assigned coverage_proxy relative_abundance</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co">#&gt;             &lt;num&gt;          &lt;int&gt;          &lt;num&gt;              &lt;num&gt;</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co">#&gt; 1:           1167              5   3.659436e-04         0.33219781</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#&gt; 2:           2304             10   3.559701e-04         0.32314406</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co">#&gt; 3:            473              6   1.152354e-04         0.10460891</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a><span class="co">#&gt; 4:            245              2   6.796697e-05         0.06169934</span></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co">#&gt; 5:            126              1   3.330895e-05         0.03023734</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a><span class="co">#&gt; 6:             82              1   3.246355e-05         0.02946989</span></span></code></pre></div>
+</div>
+<div id="b.-export-per-sample-metric-optional" class="section level3">
+<h3>B. Export per-sample metric (optional)</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">## Alternatively, export per-sample results to support parallelization</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>ra_dt <span class="ot">&lt;-</span> <span class="fu">kraken_relative_abundance</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>        <span class="at">report_dir =</span> kraken_dir,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>        <span class="at">genome_stats_file =</span> genome_stats_file,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>        <span class="at">output_folder =</span> <span class="st">&quot;relative_abundance_results&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="c.-aggregate-summaries-optional" class="section level3">
+<h3>C. Aggregate summaries (optional)</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## Combine multiple exported result files into a single object</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># Summarize relative abundance</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>ra_dt <span class="ot">&lt;-</span> <span class="fu">collect_basen_metrics</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>        <span class="at">output_folder =</span> <span class="st">&quot;relative_abundance_results&quot;</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        <span class="at">metric =</span> <span class="st">&quot;relative_abundance&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## Combine multiple exported result files into a single object</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># Summarize coverage proxy</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>ra_dt <span class="ot">&lt;-</span> <span class="fu">collect_basen_metrics</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        <span class="at">output_folder =</span> <span class="st">&quot;relative_abundance_results&quot;</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>        <span class="at">metric =</span> <span class="st">&quot;coverage_proxy&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="c.-data-transformation-optional" class="section level3">
+<h3>C. Data transformation (optional)</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; Warning: package &#39;data.table&#39; was built under R version 4.5.2</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="do">## Convert from long to wide format</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>ra_mat_dt <span class="ot">&lt;-</span> <span class="fu">dcast</span>(ra_dt, sample_id <span class="sc">~</span> taxid, <span class="at">value.var =</span> <span class="st">&quot;coverage_proxy&quot;</span>, <span class="at">fill =</span> <span class="dv">0</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">head</span>(ra_mat_dt[,<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)])</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; Key: &lt;sample_id&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;    sample_id      1150298      1262873      1638786</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;        &lt;num&gt;        &lt;num&gt;        &lt;num&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; 1:  exampleA 3.330895e-05 0.000000e+00 0.0000000000</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; 2:  exampleB 4.758422e-05 3.001291e-06 0.0001177039</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="do">## Convert to matrix</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>ra_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(ra_mat_dt[, <span class="sc">-</span><span class="dv">1</span>, <span class="at">with =</span> <span class="cn">FALSE</span>])</span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="fu">rownames</span>(ra_mat) <span class="ot">&lt;-</span> ra_mat_dt<span class="sc">$</span>sample_id</span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="fu">head</span>(ra_mat[,<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)])</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt;               1150298      1262873      1638786</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; exampleA 3.330895e-05 0.000000e+00 0.0000000000</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt; exampleB 4.758422e-05 3.001291e-06 0.0001177039</span></span></code></pre></div>
+</div>
+<div id="d.-size-factors-optional" class="section level3">
+<h3>D. Size factors (optional)</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Calculate size factors from a coverage proxy matrix</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>sf_geomean <span class="ot">&lt;-</span> <span class="fu">calc_size_factors</span>(ra_mat, <span class="at">method =</span> <span class="st">&quot;geomean&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
