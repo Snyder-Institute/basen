@@ -32,7 +32,7 @@ BASEN estimates species-level relative abundance from long-read metagenomic data
 ### Install via GitHub
 ```
 # install.packages("devtools")
-devtools::install_github("Snyder-Institute/BASEN")
+devtools::install_github("Snyder-Institute/basen")
 ```
 
 ## Workflow summary
