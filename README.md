@@ -190,7 +190,7 @@ Genus-level summarization is planned, but robust roll-up from lower-rank assignm
 
 ## Documentation
 
-The package vignette provides a full end-to-end BASEN workflow, including:
+<a href="https://htmlpreview.github.io/?https://github.com/Snyder-Institute/basen/blob/main/vignettes/BASEN.html" target="_blank">The package vignette</a> provides a full end-to-end BASEN workflow, including:
 
   - Preparation of Kraken2 outputs
   - Genome statistics generation
@@ -198,6 +198,8 @@ The package vignette provides a full end-to-end BASEN workflow, including:
   - Filtering
   - Abundance estimation
   - Optional downstream normalization
+
+Detailed BASEN documentation is also available online at <a href="https://Snyder-Institute.github.io/basen/" target="_blank">https://Snyder-Institute.github.io/basen/</a>.
 
 ## Citation
 
