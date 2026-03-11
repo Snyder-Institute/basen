@@ -1,23 +1,31 @@
 Package: basen
 Type: Package
-Title: BASEN: Base-level Abundance estimation with Species-assigned Evidence using Nanopore
-Version: 0.1.0.0
+Title: Basen: Base-level abundance estimation with species-assigned evidence using nanopore
+Version: 1.0.0
 Authors@R: 
     person("Heewon", "Seo", , "Heewon.Seo@ucalgary.ca", role = c("aut", "cre"))
 Description:
-    Calculate genome-size-normalized species-level relative abundance
-    from Kraken2 .report and .kraken outputs using species-specific
-    k-mer assignments and reference genome sizes.
-License: MIT
+    Calculates genome-size-normalized species-level relative abundance
+    from Kraken2 classification outputs. The package explicitly accounts
+    for variable read lengths by extracting species-specific k-mer
+    assignments and normalizing this evidence by reference genome sizes.
+    It also includes read-level k-mer compositional filtering to identify
+    and exclude ambiguous classifications prior to quantification, and
+    provides utilities for cross-sample aggregation and median-ratio size
+    factor calculation.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr,
-    data.table
+    data.table,
+    ggplot2,
+    stats
 Suggests:
     testthat (>= 3.0.0),
     rmarkdown,
     knitr
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

@@ -1,5 +1,10 @@
 # BASEN
-> Bracken alternatives for the long-read sequencing data
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Input-Kraken2](https://img.shields.io/badge/input-Kraken2-4B8BBE)](https://ccb.jhu.edu/software/kraken2/)
+[![Application-Long--read%20metagenomics](https://img.shields.io/badge/application-long--read%20metagenomics-2E8B57)](#overview)
+
+> A Bracken alternative for long-read metagenomic data
 
 **B**ase-level **A**bundance estimation with **S**pecies-assigned **E**vidence using **N**anopore
 
@@ -9,193 +14,197 @@
 ---
 
 ## Overview
-Comparing taxonomic abundance across metagenomic samples is challenging, particularly for long-read sequencing data, where sequencing depth, classification resolution, and database composition vary substantially. Raw read counts and sample-specific proportional summaries are not directly comparable across samples or taxonomic ranks, often introducing technical bias and obscuring true biological variation.
 
-BASEN addresses these limitations by converting taxonomic classification outputs into base-level relative abundance, normalizing assigned bases by reference genome length. This rank-agnostic metric enables robust, genome-aware comparison of taxonomic composition across samples and taxonomic levels, improving interpretability and reproducibility in Nanopore-based metagenomic analyses.
+BASEN is an R package for **genome-size-aware, species-level abundance estimation** from **Kraken2** long-read classification outputs. It was developed for long-read metagenomic workflows, particularly those based on custom reference databases, where conventional count-based summaries can be difficult to interpret because of differences in read length, sequencing depth, taxonomic assignment characteristics, and reference genome size.
+
+Rather than relying on read counts alone, BASEN aggregates **species-assigned k-mer evidence** from Kraken2 read-level output, normalizes that signal by **effective reference genome length**, and scales the normalized values within each sample to produce **species-level relative abundance estimates**.
+
+BASEN also provides a **read-level compositional quality-control workflow** based on k-mer assignment profiles. These diagnostics help identify ambiguous or low-information reads before downstream abundance interpretation.
 
 ## Features
-BASEN estimates species-level relative abundance from long-read metagenomic data by:
 
-1. Restricting classification to species-level assignments
-2. Counting only species-assigned k-mers (base-level evidence)
-3. Normalizing by reference genome length
-4. Computing relative abundance across species
+BASEN provides two main components:
 
+1. **Species-level abundance estimation**
+   - parses Kraken2 `*.kraken` and `*.report` files
+   - aggregates species-assigned k-mer evidence
+   - normalizes by effective reference genome length
+   - reports coverage proxies and relative abundance
+
+2. **Read-level compositional quality control**
+   - profiles per-read k-mer composition
+   - quantifies assigned and unassigned k-mer proportions
+   - computes Shannon diversity of taxonomic k-mer assignments
+   - supports filtering of low-information reads before abundance estimation
 
 ## Installation
-### Requirement
- * R > 4.3.0
- * Dependencies (alphabetical order):
-   * data.table
-   * dplyr
 
-### Install via GitHub
-```
+### Requirements
+
+- R >= 4.3.0
+- Dependencies:
+  - `data.table`
+  - `dplyr`
+  - `ggplot2` (for QC plotting)
+
+### Install from GitHub
+
+```r
 # install.packages("devtools")
 devtools::install_github("Snyder-Institute/basen")
 ```
 
 ## Workflow summary
-### Input
-  * Long-read metagenomic sequencing data (Nanopore FASTQ)
-  * Custom Kraken2 database with TaxID-annotated reference genomes
-  * Reference genome FASTA files for genome size estimation
 
-### Step 1. Taxonomic classification
-  * Run Kraken2 on each sample using the custom database
-  * Generate:
-    * `.kraken` files (per-read taxonomic assignments and k-mer evidence)
-    * `.report` files (taxonomy summaries across ranks)
+### Inputs
 
-### Step 2. Genome size normalization
-  * Extract genome sizes (base pairs) from reference FASTA files
-  * Create a genome statistics table linking TaxID to genome length
+BASEN expects:
 
-### Step 3. Base-level signal aggregation
-  * Identify species-level TaxIDs from Kraken2 reports
-  * For each read:
-    * Extract species-specific k-mer counts
-    * Sum assigned bases per species
-    * Normalize assigned bases by reference genome size to compute a coverage proxy
+- **Kraken2 read-level output** (`*.kraken`)
+- **Kraken2 report files** (`*.report`)
+- **Genome statistics table** containing:
+  - column 1: TaxID
+  - column 2: genome size in base pairs
 
-### Step 4. Relative abundance estimation
-  * Convert coverage proxies into relative abundance values by normalization within each sample
-  * Produce rank-agnostic, genome-size–normalized abundance estimates
+Genome statistics can be derived from reference FASTA files using the helper script:
 
-### Output
-  * Per-sample species-level relative abundance tables
-  * Optional exported files for parallel processing
-  * Combined long-format table or wide abundance matrix for downstream analysis
+```bash
+sh get_genome_length_from_fasta.sh *.fa > genome_stats.txt
+```
 
-### Key advantages
-  * Accounts for variable read length in long-read sequencing
-  * Reduces bias from genome size differences
-  * Enables consistent comparison across samples and taxonomic ranks
+### Core workflow
 
-## Summary
+  1. **Classify reads with Kraken2**  
+     Run Kraken2 against a custom reference database and generate `*.kraken` and `*.report` files.
 
-BASEN estimates **species-level relative abundance** by quantifying species-assigned k-mers from long-read sequencing data, normalizing by reference genome length, and scaling across detected species to obtain genome-size–corrected relative abundances.
+  2. **Profile read-level k-mer composition (optional but recommended)**  
+     Compute per-read QC metrics and identify low-information reads.
+
+  3. **Filter reads based on compositional QC (optional but recommended)**  
+     Retain reads with acceptable unassigned-k-mer proportion and Shannon diversity.
+
+  4. **Estimate species-level abundance**  
+     - identifies species-level taxa from the Kraken2 report
+     - extracts species-assigned k-mer evidence from classified reads
+     - sums that evidence by species
+     - normalizes by effective reference genome length
+     - scales within each sample to generate relative abundance
+
+  5. **Optional downstream normalization**  
+     BASEN can also compute size factors from coverage-proxy matrices and generate normalized matrices for downstream analyses such as ordination, PCoA, clustering, or heatmaps.
+
+## Primary outputs
+
+### `kraken_relative_abundance()`
+
+The main BASEN output is a long-format table with columns including:
+
+- `sample_id`
+- `name`
+- `taxid`
+- `genome_size_bp`
+- `bases_assigned`
+- `reads_assigned`
+- `coverage_proxy`
+- `relative_abundance`
+
+### `profile_kmer_composition()`
+
+The QC workflow returns read-level metrics including:
+
+- `total_kmers`
+- `assigned_kmers`
+- `unassigned_kmers`
+- `assigned_perc`
+- `unassigned_perc`
+- `kmers_diversity`
+
+### Relative abundance and normalized matrices
+
+The `relative_abundance` column returned by `kraken_relative_abundance()` represents the species-level relative abundance within each sample and is the primary BASEN abundance output.
+
+BASEN also provides optional utilities for calculating size factors from `coverage_proxy` values with `calc_size_factors()` and for generating normalized matrices from those size factors. These normalized matrices are useful for downstream cross-sample analyses, such as ordination, clustering, heatmaps, or other comparative analyses across samples.
 
 ---
 
-## Workflows in details
-### Step 1. Input data
+## Method summary
 
-```text
-Kraken2 output
-        |-- *.kraken   (read-level k-mer assignments)
-        |-- *.report   (taxonomy summary)
-```
+For each species $begin:math:text$s$end:math:text$, BASEN computes:
 
-Inputs:
-
-- Long-read sequencing data with variable read length
-- Kraken2 classification output against a custom reference database
-- Reference genome statistics (genome length per species)
-
-### Step 2. Select species-level taxa
-
-From the Kraken2 report file, retain only taxa annotated at the species rank.
-
-This step defines the set of species included in downstream abundance estimation.
-
-### Step 3. Parse k-mer assignments per read
-
-Each classified read contains a k-mer assignment string of the form:
-
-```text
-taxid1:count1 taxid2:count2 ... 0:count_unassigned
-```
-
-Example:
-
-```text
-1256908:79 0:41 1256908:2 0:11 1256908:69 0:1
-```
-
-Only k-mers assigned to species taxids are counted. Unassigned k-mers (`taxid = 0`) are excluded.
-
-### Step 4. Estimate species-assigned bases
-
-For each read *r*:
-
-- Let $`k_r`$ be the k-mers where Kraken assigns the read to species _s_
-
-Define:
+### Species-assigned k-mer evidence
 
 ```math
 B_s = \sum_r k_{r,s}
 ```
 
-Where:
+where $begin:math:text$k\_\{r\,s\}$end:math:text$ is the number of k-mers assigned to species $begin:math:text$s$end:math:text$ in read $begin:math:text$r$end:math:text$.
 
-- $`B_s`$ is the total number of species-assigned bases (k-mers) for species *s*
-
-Text-based schematic:
-
-```text
-Read 1: [#][#][#][ ][ ]  -> species s
-Read 2: [#][#][ ][#][#]  -> species s
-Read 3: [#][ ][ ][#][ ]  -> species s
-```
-
-- $`B_s`$ = total number of [#] boxes aligned to species _s_
-
-## Step 5. Incorporate reference genome length
-
-For each species *s*:
-
-- Let $G_s$  represent the effective reference genome length, defined as the total length of the reference genome minus the k-mer size used by Kraken2 (35 bp by default)
-
-Text-based schematic:
-
-```text
-Reference genome (species s):
-|--------------------------------------|
-<------------  G_s bases  ------------->
-```
-
-The reference genome length can be derived directly from FASTA files using the auxiliary script `get_genome_length_from_fasta.sh`, located in the inst/scripts directory.
-
-### Step 6. Normalize by genome length (coverage proxy)
-
-To correct for genome size differences, compute a genome-size–normalized coverage proxy.
+### Effective genome length
 
 ```math
-C_s = B_s / G_s
+G_s = \text{genome\_size\_bp} - k + 1
 ```
 
-Where:
+where $begin:math:text$k$end:math:text$ is the Kraken2 k-mer length (35 by default).
 
-- $`C_s`$ approximates the average genome coverage of species _s_
-
-This step is conceptually analogous to length normalization in TPM-style RNA-seq metrics.
-
-### Step 7. Compute relative abundance
-
-Normalize the coverage proxy across all detected species.
+### Coverage proxy
 
 ```math
-RA_s = C_s / \sum_{i=1}^n C_i
+C_s = \frac{B_s}{G_s}
 ```
 
-Where:
+### Relative abundance
 
-- $`RA_s`$ is the relative abundance of species _s_
-
-## Final output
-
-For each species *s*, BASEN reports:
-
-- $B_s$  species-assigned bases (k-mers)
-- $G_s$  reference genome length
-- $C_s$  genome-size–normalized coverage proxy
-- $RA_s$ relative abundance
-
-## Usage
-  * For a complete description of the workflow and implementation details, refer to the vignette.
-
+```math
+RA_s = \frac{C_s}{\sum_i C_i}
 ```
+
+This approach is conceptually related to length-normalization strategies used in transcriptomics, but is adapted here for **species-level abundance estimation from Kraken2 long-read classifications**.
+
+---
+
+## Example
+
+```r
 library(basen)
-resultsL <- kraken_relative_abundance(report_dir = report_dir, genome_stats_file = genome_stats_file)
+
+results <- kraken_relative_abundance(
+  report_dir = report_dir,
+  kraken_dir = kraken_dir,
+  genome_stats_file = genome_stats_file
+)
 ```
+
+### Current scope and planned extension
+
+BASEN currently implements:
+
+- **Species-level abundance estimation**
+- **Read-level compositional QC**
+- **Optional filtering of low-information reads**
+- **Optional downstream size-factor normalization of coverage-proxy matrices**
+
+Genus-level summarization is planned, but robust roll-up from lower-rank assignments is not yet implemented. Meaningful aggregation across taxonomic ranks requires explicit taxonomy-aware mapping, and this functionality is being reserved for future development.
+
+---
+
+## Documentation
+
+The package vignette provides a full end-to-end BASEN workflow, including:
+
+  - Preparation of Kraken2 outputs
+  - Genome statistics generation
+  - Read-level QC
+  - Filtering
+  - Abundance estimation
+  - Optional downstream normalization
+
+## Citation
+
+If you use BASEN in your work, please cite the BASEN manuscript once available.
+
+## License
+
+MIT License
+
+Copyright (c) 2026 The Bioinformatics Hub at the Snyder Institute
