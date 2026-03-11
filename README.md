@@ -66,7 +66,7 @@ BASEN expects:
   - column 1: TaxID
   - column 2: genome size in base pairs
 
-Genome statistics can be derived from reference FASTA files using the helper script:
+Genome statistics can be derived from reference FASTA files using the helper script `inst/scripts/get_genome_length_from_fasta.sh`:
 
 ```bash
 sh get_genome_length_from_fasta.sh *.fa > genome_stats.txt
@@ -137,7 +137,7 @@ For each species `s`, BASEN computes:
 B_s = \sum_r k_{r,s}
 ```
 
-where `k_{r,s}` is the number of k-mers assigned to species `s` in read `r`.
+where the quantity shown above represents the number of k-mers assigned to species `s` in read `r`.
 
 ### Effective genome length
 
