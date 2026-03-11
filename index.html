@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="BASEN documentation" /><link rel="canonical" href="https://snyder-institute.github.io/basen/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>BASEN</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/basen/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> BASEN
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#required-inputs">Required inputs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#conceptual-framework">Conceptual framework</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#core-functions">Core functions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#read-level-qc">Read-level QC</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#profile_kmer_composition">profile_kmer_composition()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#plot_kmer_qc">plot_kmer_qc()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#filter_low_info_reads">filter_low_info_reads()</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#abundance">Abundance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#kraken_relative_abundance">kraken_relative_abundance()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#analytical-steps">Analytical steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output-columns">Output columns</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#interpretation">Interpretation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#collect_basen_metrics">collect_basen_metrics()</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#normalized-matrix">Normalized matrix</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#calc_size_factors">calc_size_factors()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#intended-use">Intended use</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#practical-distinction">Practical distinction</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">BASEN</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Snyder-Institute/basen/edit/master/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="basen">BASEN</h1>
+<p>BASEN (<strong>B</strong>ase-level <strong>A</strong>bundance estimation with <strong>S</strong>pecies-assigned <strong>E</strong>vidence using <strong>N</strong>anopore) is an R package for genome-size-aware, species-level abundance estimation from Kraken2 long-read classification outputs. It was developed for long-read metagenomic workflows in which conventional count-based summaries are difficult to interpret because of variation in read length, sequencing depth, taxonomic assignment characteristics, and reference genome size.</p>
+<p>BASEN provides two integrated analytical components. <strong>First, it estimates species-level abundance</strong> by aggregating species-assigned k-mer evidence from Kraken2 read-level output, normalizing that evidence by effective reference genome length, and scaling the normalized values within each sample to produce relative abundance estimates. Second, <strong>it provides a read-level compositional quality-control workflow</strong> based on assigned and unassigned k-mer profiles, enabling identification of ambiguous or low-information reads prior to abundance estimation.</p>
+<p>This documentation summarizes the BASEN workflow and its principal functions.</p>
+<hr />
+<h2 id="installation">Installation</h2>
+<p>BASEN is implemented in R and is distributed from GitHub.</p>
+<p>Install the package with:</p>
+<pre><code class="language-r"># install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;Snyder-Institute/basen&quot;)
+</code></pre>
+<p>The package currently depends on the following core R packages:</p>
+<ul>
+<li><code>data.table</code></li>
+<li><code>dplyr</code></li>
+<li><code>ggplot2</code> (for visualization of read-level QC metrics)</li>
+</ul>
+<p>After installation, load BASEN in the usual way:</p>
+<pre><code class="language-r">library(basen)
+</code></pre>
+<p>For abundance estimation, BASEN expects Kraken2-generated <code>*.kraken</code> and <code>*.report</code> files together with a genome statistics table containing TaxIDs and reference genome sizes. Genome statistics can be derived from reference FASTA files using the helper script located at:</p>
+<pre><code class="language-text">inst/scripts/get_genome_length_from_fasta.sh
+</code></pre>
+<p>An example command is:</p>
+<pre><code class="language-bash">sh inst/scripts/get_genome_length_from_fasta.sh *.fa &gt; genome_stats.txt
+</code></pre>
+<p>Only the first two columns of the resulting table are required by BASEN:</p>
+<ol>
+<li>TaxID</li>
+<li>Genome size in base pairs</li>
+</ol>
+<hr />
+<h2 id="workflow">Workflow</h2>
+<p>The BASEN workflow consists of four conceptual stages:</p>
+<ol>
+<li>Kraken2 classification<ul>
+<li>This step is external to BASEN. Users must run Kraken2 independently to generate the <code>*.kraken</code> and <code>*.report</code> files required for downstream BASEN analysis.</li>
+</ul>
+</li>
+<li><strong>Read-level compositional quality control</strong></li>
+<li><strong>Species-level abundance estimation</strong></li>
+<li><strong>Optional cross-sample normalization for downstream analysis</strong></li>
+</ol>
+<p>A typical workflow begins with Kraken2 classification against a custom reference database. BASEN then uses the resulting read-level and report-level outputs to quantify taxonomic signal at the species level.</p>
+<h3 id="required-inputs">Required inputs</h3>
+<p>BASEN requires:</p>
+<ul>
+<li>Kraken2 read-level output files (<code>*.kraken</code>)</li>
+<li>Kraken2 report files (<code>*.report</code>)</li>
+<li>A genome statistics file containing TaxIDs and genome sizes</li>
+</ul>
+<p>These inputs are used in different ways:</p>
+<ul>
+<li><code>*.kraken</code> files provide the per-read k-mer assignment string from which BASEN extracts species-assigned evidence</li>
+<li><code>*.report</code> files define the taxa available at species rank for downstream quantification</li>
+<li>The genome statistics table provides the reference lengths needed to normalize aggregated k-mer evidence</li>
+</ul>
+<p>Example snapshots of <code>exampleA.kraken</code> and <code>exampleA.report</code> are shown below to illustrate the expected input structure.</p>
+<p align="center"><img src="imgs/exampleA_files.png" alt=""></p>
+
+<h3 id="conceptual-framework">Conceptual framework</h3>
+<p>For each species, BASEN aggregates the number of species-assigned k-mers across classified reads to obtain a species-level evidence quantity. This aggregated signal is then normalized by effective reference genome length to derive a coverage proxy, and the coverage proxies are scaled within each sample to obtain relative abundance.</p>
+<p>In parallel, BASEN can compute read-level compositional metrics, including total k-mers, assigned k-mers, unassigned k-mers, assigned and unassigned proportions, and Shannon diversity of taxonomic k-mer assignments. These quantities support evaluation of assignment coherence before abundance estimation.</p>
+<h3 id="core-functions">Core functions</h3>
+<p>The principal BASEN functions are:</p>
+<ul>
+<li><code>profile_kmer_composition()</code>: Computes read-level k-mer composition metrics from a Kraken2 <code>*.kraken</code> file.</li>
+<li><code>filter_low_info_reads()</code>: Applies empirical thresholds to read-level QC metrics and returns retained read IDs.</li>
+<li><code>plot_kmer_qc()</code>: Visualizes read-level QC profiles to support threshold selection.</li>
+<li><code>kraken_relative_abundance()</code>: Computes genome-size-aware species-level abundance estimates from Kraken2 outputs.</li>
+<li><code>collect_basen_metrics()</code>: Aggregates per-sample BASEN outputs across files.</li>
+<li><code>calc_size_factors()</code>: Calculates sample-specific size factors from coverage-proxy matrices for downstream cross-sample normalization.</li>
+</ul>
+<hr />
+<h2 id="read-level-qc">Read-level QC</h2>
+<p>Read-level compositional quality control is designed to identify classified reads that carry weak, diffuse, or ambiguous taxonomic evidence. In long-read metagenomic data, nominally classified reads may still contain substantial unassigned content or highly mixed taxonomic k-mer profiles. BASEN therefore provides functions to characterize the composition of each classified read before abundance is estimated.</p>
+<h3 id="profile_kmer_composition"><code>profile_kmer_composition()</code></h3>
+<p>This function parses a single Kraken2 <code>*.kraken</code> file and computes the following metrics for each classified read:</p>
+<ul>
+<li><code>total_kmers</code>: Total number of k-mers in the read, calculated from read length and the Kraken2 k-mer length.</li>
+<li><code>assigned_kmers</code>: Number of k-mers assigned to the read’s reported TaxID.</li>
+<li><code>unassigned_kmers</code>: Number of k-mers with TaxID <code>0</code>.</li>
+<li><code>assigned_perc</code>: Proportion of total k-mers assigned to the reported TaxID.</li>
+<li><code>unassigned_perc</code>: Proportion of total k-mers that remain unassigned.</li>
+<li><code>kmers_diversity</code>: Shannon diversity of taxonomic k-mer assignments within the read.</li>
+</ul>
+<p>These metrics provide a compact summary of read-level assignment quality. Reads with high unassigned proportion or high assignment diversity are more likely to represent low-information or compositionally ambiguous evidence.</p>
+<p>A typical call is:</p>
+<pre><code class="language-r">qc_metrics &lt;- profile_kmer_composition(
+  kraken_file = &quot;sample1.kraken&quot;,
+  k_mer_length = 35
+)
+</code></pre>
+<h3 id="plot_kmer_qc"><code>plot_kmer_qc()</code></h3>
+<p>This function visualizes the relationship between unassigned k-mer proportion and Shannon diversity using a two-dimensional binned plot. It is intended as a diagnostic tool for identifying the empirical region occupied by high-confidence versus low-confidence reads.</p>
+<p>Typical usage:</p>
+<pre><code class="language-r">qc_plot &lt;- plot_kmer_qc(qc_metrics)
+print(qc_plot)
+</code></pre>
+<p>In general, reads with lower <code>unassigned_perc</code> and lower <code>kmers_diversity</code> show more coherent taxonomic evidence. Reads occupying the opposite region of the plot may warrant exclusion.</p>
+<h3 id="filter_low_info_reads"><code>filter_low_info_reads()</code></h3>
+<p>This function applies user-defined thresholds to the read-level QC metrics and returns retained read IDs. Filtering is based on two parameters:</p>
+<ul>
+<li><code>max_unassigned_perc</code>: The maximum allowable proportion of unassigned k-mers within a read. Reads with <code>unassigned_perc</code> values above this threshold are excluded.</li>
+<li><code>max_shannon_diversity</code>: The maximum allowable Shannon diversity of taxonomic k-mer assignments within a read. Reads with <code>kmers_diversity</code> values above this threshold are excluded because they exhibit more diffuse or ambiguous assignment profiles.</li>
+</ul>
+<p>A read is retained only if it satisfies both thresholds. For a single sample, the function returns a character vector of read IDs. If a <code>sample_id</code> column is present in the input table, the function returns a named list of retained read IDs by sample.</p>
+<p>Example:</p>
+<pre><code class="language-r">hq_reads &lt;- filter_low_info_reads(
+  kmer_profile = qc_metrics,
+  max_unassigned_perc = 0.5,
+  max_shannon_diversity = 1.0
+)
+</code></pre>
+<p>This QC workflow is optional but recommended, particularly for long-read datasets in which read-level assignment quality is heterogeneous. </p>
+<p>An example two-panel figure is shown below: the left panel displays the full read-level QC profile generated by <code>plot_kmer_qc()</code>, and the right panel highlights the subset of reads retained by <code>filter_low_info_reads()</code> under the specified thresholds. Together, these panels illustrate how BASEN uses empirical thresholds on unassigned k-mer proportion and Shannon diversity to identify high-confidence reads for downstream abundance estimation.</p>
+<p align="center"><img src="imgs/qc_filter.png" alt=""></p>
+
+<hr />
+<h2 id="abundance">Abundance</h2>
+<p>Species-level abundance estimation is the core BASEN procedure.</p>
+<h3 id="kraken_relative_abundance"><code>kraken_relative_abundance()</code></h3>
+<p>This function derives genome-size-aware species-level abundance estimates directly from Kraken2 classification outputs. It accepts directories containing <code>*.kraken</code> and <code>*.report</code> files, together with a genome statistics file, and returns a combined long-format table of abundance metrics across all processed samples.</p>
+<p>A minimal call is:</p>
+<pre><code class="language-r">ra_dt &lt;- kraken_relative_abundance(
+  report_dir = &quot;path/to/reports&quot;,
+  kraken_dir = &quot;path/to/kraken&quot;,
+  genome_stats_file = &quot;path/to/genome_stats.txt&quot;
+)
+</code></pre>
+<p>If high-confidence read IDs have been obtained from the QC workflow, they can be supplied through the <code>read_filter</code> argument so that only retained reads contribute to abundance estimation.</p>
+<p>Example:</p>
+<pre><code class="language-r">ra_dt &lt;- kraken_relative_abundance(
+  report_dir = &quot;path/to/reports&quot;,
+  kraken_dir = &quot;path/to/kraken&quot;,
+  genome_stats_file = &quot;path/to/genome_stats.txt&quot;,
+  read_filter = hq_reads
+)
+</code></pre>
+<h3 id="analytical-steps">Analytical steps</h3>
+<p>For each sample, BASEN performs the following operations:</p>
+<ol>
+<li>Reads the Kraken2 report and identifies taxa annotated at species rank.</li>
+<li>Reads the Kraken2 <code>*.kraken</code> file and retains classified reads.</li>
+<li>Extracts the number of k-mers assigned to each focal species from the read-level assignment strings.</li>
+<li>Aggregates species-assigned k-mer evidence across all retained reads.</li>
+<li>Records the number of reads assigned to each species.</li>
+<li>Normalizes the aggregated species-assigned signal by effective reference genome length.</li>
+<li>Scales the normalized values within each sample to obtain relative abundance.</li>
+</ol>
+<h3 id="output-columns">Output columns</h3>
+<p>The resulting table typically includes:</p>
+<ul>
+<li><code>sample_id</code>: Sample identifier.</li>
+<li><code>name</code>: Species name.</li>
+<li><code>taxid</code>: Species TaxID.</li>
+<li><code>genome_size_bp</code>: Effective genome size used for normalization.</li>
+<li><code>bases_assigned</code>: Total species-assigned k-mer evidence aggregated across reads.</li>
+<li><code>reads_assigned</code>: Number of reads contributing to the species.</li>
+<li><code>coverage_proxy</code>: Genome-length-normalized signal.</li>
+<li><code>relative_abundance</code>: Within-sample species-level relative abundance.</li>
+</ul>
+<h3 id="interpretation">Interpretation</h3>
+<p>The <code>relative_abundance</code> column is the primary BASEN abundance output. It represents the species-level relative abundance within each sample after aggregation of species-assigned k-mer evidence and normalization by effective genome length.</p>
+<p>The <code>coverage_proxy</code> column is an intermediate normalized signal that remains useful for downstream analysis. It should not be interpreted as relative abundance, but rather as a genome-length-adjusted abundance measure that can be used for comparative analyses across samples.</p>
+<h3 id="collect_basen_metrics"><code>collect_basen_metrics()</code></h3>
+<p>When BASEN outputs have been written as per-sample <code>*.basen</code> files, <code>collect_basen_metrics()</code> can be used to aggregate selected metrics across samples.</p>
+<p>For example:</p>
+<pre><code class="language-r">ra_combined &lt;- collect_basen_metrics(
+  output_folder = &quot;basen_results&quot;,
+  metric = &quot;relative_abundance&quot;
+)
+</code></pre>
+<p>or</p>
+<pre><code class="language-r">cp_combined &lt;- collect_basen_metrics(
+  output_folder = &quot;basen_results&quot;,
+  metric = &quot;coverage_proxy&quot;
+)
+</code></pre>
+<p>This function is useful when BASEN has been run in a parallelized or file-based workflow.</p>
+<hr />
+<h2 id="normalized-matrix">Normalized matrix</h2>
+<p>BASEN also provides an optional downstream normalization utility for cross-sample analysis based on <code>coverage_proxy</code> values.</p>
+<h3 id="calc_size_factors"><code>calc_size_factors()</code></h3>
+<p>This function computes sample-specific size factors from a taxon-by-sample coverage-proxy matrix. The method follows a median-ratio style normalization strategy in which taxa with strictly positive values across samples are used to define a reference, and sample-level scaling factors are estimated from ratios relative to that reference.</p>
+<p>Example:</p>
+<pre><code class="language-r">sf &lt;- calc_size_factors(
+  x = coverage_matrix,
+  method = &quot;median&quot;
+)
+</code></pre>
+<p>The resulting size factors can be applied to the coverage-proxy matrix to obtain a normalized matrix for downstream analyses:</p>
+<pre><code class="language-r">normalized_mat &lt;- sweep(coverage_matrix, 2, sf, &quot;/&quot;)
+</code></pre>
+<h3 id="intended-use">Intended use</h3>
+<p>This normalized matrix is not the primary BASEN abundance output. Instead, it is an optional downstream object that may be useful for:</p>
+<ul>
+<li>Ordination</li>
+<li>PCoA</li>
+<li>Clustering</li>
+<li>Heatmaps</li>
+<li>Other comparative analyses across samples</li>
+</ul>
+<p>In contrast, the primary BASEN abundance result remains the <code>relative_abundance</code> column returned by <code>kraken_relative_abundance()</code>.</p>
+<h3 id="practical-distinction">Practical distinction</h3>
+<p>In brief:</p>
+<ul>
+<li><code>relative_abundance</code> is the within-sample BASEN abundance estimate</li>
+<li>normalized matrices derived from <code>coverage_proxy</code> are optional downstream objects for cross-sample analysis</li>
+</ul>
+<hr />
+<h2 id="notes">Notes</h2>
+<p>BASEN currently implements species-level abundance estimation and read-level compositional QC. Genus-level summarization is planned, but taxonomy-aware roll-up across lower-rank assignments is not yet implemented.</p>
+<p>For a complete workflow example, including data preparation, QC, abundance estimation, and optional downstream normalization, refer to <a href="https://htmlpreview.github.io/?https://github.com/Snyder-Institute/basen/blob/main/vignettes/BASEN.html" target="_blank">the package vignette</a>.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>&copy; 2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Snyder-Institute/basen" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-03-11 23:36:59.970840+00:00
+-->
