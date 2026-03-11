@@ -129,7 +129,7 @@ BASEN also provides optional utilities for calculating size factors from `covera
 
 ## Method summary
 
-For each species $begin:math:text$s$end:math:text$, BASEN computes:
+For each species `s`, BASEN computes:
 
 ### Species-assigned k-mer evidence
 
@@ -137,7 +137,7 @@ For each species $begin:math:text$s$end:math:text$, BASEN computes:
 B_s = \sum_r k_{r,s}
 ```
 
-where $begin:math:text$k\_\{r\,s\}$end:math:text$ is the number of k-mers assigned to species $begin:math:text$s$end:math:text$ in read $begin:math:text$r$end:math:text$.
+where `k_{r,s}` is the number of k-mers assigned to species `s` in read `r`.
 
 ### Effective genome length
 
@@ -145,7 +145,7 @@ where $begin:math:text$k\_\{r\,s\}$end:math:text$ is the number of k-mers assign
 G_s = \text{genome\_size\_bp} - k + 1
 ```
 
-where $begin:math:text$k$end:math:text$ is the Kraken2 k-mer length (35 by default).
+where `k` is the Kraken2 k-mer length (35 by default).
 
 ### Coverage proxy
 
