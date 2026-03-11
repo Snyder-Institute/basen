@@ -1,0 +1,12 @@
+site_name: BASEN
+site_url: https://snyder-institute.github.io/basen/
+repo_url: https://github.com/Snyder-Institute/basen
+site_description: BASEN documentation
+
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+
+copyright: "&copy; 2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved."
