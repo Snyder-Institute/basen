@@ -13,7 +13,7 @@ Description:
     and exclude ambiguous classifications prior to quantification, and
     provides utilities for cross-sample aggregation and median-ratio size
     factor calculation.
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports:
